@@ -83,13 +83,23 @@ void matrix_print(FILE *f, matrix m)
   }
 }
 
-float matrix_trace(matrix m) {
+scalar matrix_trace(matrix m) {
   if (m.n1==m.n2) {
-    float res = 0.;
+    double res = 0.;
     for (unsigned int i = 0; i<m.n1; i++) {
       res += *matrix_get(m, i, i);
     }
     return res;
   }
   exit(53);
+}
+
+matrix tensor_product(matrix m, matrix n) {
+  matrix res = matrix_create(m.n1*n.n1, m.n2*n.n2);
+  for (unsigned int i = 0; i<m.n1*n.n1; i++) {
+    for (unsigned int j = 0; j<m.n2*n.n2; j++) {
+      *matrix_get(res, i, j) = (*matrix_get(m, i/n.n1, j/n.n2)) * (*matrix_get(n, i%n.n1, j%n.n2));
+    }
+  }
+  return res;
 }
