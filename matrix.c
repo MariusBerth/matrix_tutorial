@@ -79,7 +79,7 @@ void matrix_print(FILE *f, matrix m)
             "%"PRINT_PRECISION"."PRINT_DECIMAL_PRECISION"f ",
             *matrix_get(m, i, j));
       fprintf(f, "\n");
-    }
+   }
   }
 }
 
@@ -126,4 +126,13 @@ matrix matrix_exp (matrix m, unsigned int n){
     }
     return res;
   }
+float matrix_trace(matrix m) {
+  if (m.n1==m.n2) {
+    float res = 0.;
+    for (unsigned int i = 0; i<m.n1; i++) {
+      res += *matrix_get(m, i, i);
+    }
+    return res;
+  }
+  exit(53);
 }
