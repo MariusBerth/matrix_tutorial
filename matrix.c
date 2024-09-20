@@ -94,6 +94,97 @@ void matrix_print(FILE *f, matrix m)
             "%"PRINT_PRECISION"."PRINT_DECIMAL_PRECISION"f ",
             *matrix_get(m, i, j));
       fprintf(f, "\n");
+   }
+  }
+}
+
+matrix matrix_scal_mult(scalar lambda, matrix m) {
+  matrix res = {0,0,false,NULL};
+  if (!m.ok){
+    return res;
+  }
+  else{
+    int i,j;
+    res = matrix_create(m.n1, m.n2, 0.);
+
+    for(i=0; i<m.n1; i++){
+      for(j=0; j<m.n2; j++){
+        *matrix_get(res, i, j) = lambda * (*matrix_get(m, i, j));
+      }
+    }
+    return res;
+  }
+}
+
+matrix matrix_exp (matrix m, unsigned int n){
+  matrix res ={0,0,false,NULL};
+  if (!m.ok || m.n1 != m.n2){
+    return res;
+  }
+  else{
+    int ex = n;
+    res = matrix_create(m.n1, m.n2, 0.);
+    matrix base = m;
+      
+    while (ex >0){
+      if ((ex % 2) == 1){
+        matrix resaux = matrix_add (res, base);
+        matrix_destroy(res);
+        res = resaux;
+        matrix_destroy(resaux);
+      }
+      matrix baseaux = matrix_mult(base,base);
+      matrix_destroy (base);
+      base = baseaux;
+      matrix_destroy(baseaux);
+      ex = ex/2;
+    }
+    return res;
+  }
+}
+
+matrix matrix_mult(matrix a, matrix b)
+{
+  matrix res = {0, 0, false, NULL};
+
+  if (!a.ok || !b.ok || a.n2 != b.n1)
+    return res;
+  
+  res = matrix_create(a.n1, b.n2, 0);
+
+  for (unsigned i = 0; i < a.n1; i++)
+  {
+    for (unsigned j = 0; j < b.n2; j++)
+    {
+      scalar *cell = matrix_get(res, i, j);
+      
+      for (unsigned k = 0; k < a.n2; k++)
+      {
+        *cell += *matrix_get(a, i, k) * *matrix_get(b, k, j);
+      }
     }
   }
+
+  return res;
+}
+
+scalar matrix_trace(matrix m) {
+  if (m.n1==m.n2) {
+    double res = 0.;
+    for (unsigned int i = 0; i<m.n1; i++) {
+      res += *matrix_get(m, i, i);
+    }
+    return res;
+  }
+  exit(53);
+}
+
+matrix tensor_product(matrix m, matrix n) {
+  matrix res = matrix_create(m.n1*n.n1, m.n2*n.n2, 0.);
+  for (unsigned int i = 0; i<m.n1*n.n1; i++) {
+    for (unsigned int j = 0; j<m.n2*n.n2; j++) {
+      *matrix_get(res, i, j) = (*matrix_get(m, i/n.n1, j/n.n2)) * (*matrix_get(n, i%n.n1, j%n.n2));
+    }
+  }
+  return res;
 }
