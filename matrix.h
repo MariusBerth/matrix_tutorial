@@ -22,6 +22,8 @@ matrix matrix_scal_mult(scalar lambda, matrix m);
 matrix matrix_exp(matrix m, unsigned int n);
 
 matrix add_matrix(matrix m, matrix n);
-float matrix_trace(matrix m);
+matrix matrix_mult(matrix a, matrix b);
+scalar matrix_trace(matrix m);
+matrix tensor_product(matrix m, matrix n);
 
 #endif /* MATRIX_H */

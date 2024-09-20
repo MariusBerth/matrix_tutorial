@@ -126,13 +126,50 @@ matrix matrix_exp (matrix m, unsigned int n){
     }
     return res;
   }
-float matrix_trace(matrix m) {
+}
+
+matrix matrix_mult(matrix a, matrix b)
+{
+  matrix res = {0, 0, false, NULL};
+
+  if (!a.ok || !b.ok || a.n2 != b.n1)
+    return res;
+  
+  res = matrix_create(a.n1, b.n2, 0);
+
+  for (unsigned i = 0; i < a.n1; i++)
+  {
+    for (unsigned j = 0; j < b.n2; j++)
+    {
+      scalar *cell = matrix_get(res, i, j);
+      
+      for (unsigned k = 0; k < a.n2; k++)
+      {
+        *cell += *matrix_get(a, i, k) * *matrix_get(b, k, j);
+      }
+    }
+  }
+
+  return res;
+}
+
+scalar matrix_trace(matrix m) {
   if (m.n1==m.n2) {
-    float res = 0.;
+    double res = 0.;
     for (unsigned int i = 0; i<m.n1; i++) {
       res += *matrix_get(m, i, i);
     }
     return res;
   }
   exit(53);
+}
+
+matrix tensor_product(matrix m, matrix n) {
+  matrix res = matrix_create(m.n1*n.n1, m.n2*n.n2, 0.);
+  for (unsigned int i = 0; i<m.n1*n.n1; i++) {
+    for (unsigned int j = 0; j<m.n2*n.n2; j++) {
+      *matrix_get(res, i, j) = (*matrix_get(m, i/n.n1, j/n.n2)) * (*matrix_get(n, i%n.n1, j%n.n2));
+    }
+  }
+  return res;
 }
