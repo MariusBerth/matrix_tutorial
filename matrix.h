@@ -21,6 +21,7 @@ void matrix_print(FILE *f, matrix m);
 
 matrix add_matrix(matrix m, matrix n);
 matrix matrix_mult(matrix a, matrix b);
-float matrix_trace(matrix m);
+scalar matrix_trace(matrix m);
+matrix tensor_product(matrix m, matrix n);
 
 #endif /* MATRIX_H */
