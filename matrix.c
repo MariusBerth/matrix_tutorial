@@ -79,15 +79,14 @@ void matrix_print(FILE *f, matrix m)
             "%"PRINT_PRECISION"."PRINT_DECIMAL_PRECISION"f ",
             *matrix_get(m, i, j));
       fprintf(f, "\n");
-    }
+   }
   }
 }
 
 float matrix_trace(matrix m) {
-  float res = 0.;
   if (m.n1==m.n2) {
     float res = 0.;
-    for (int i = 0; i<m.n1; i++) {
+    for (unsigned int i = 0; i<m.n1; i++) {
       res += *matrix_get(m, i, i);
     }
     return res;
