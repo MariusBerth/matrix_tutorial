@@ -7,6 +7,21 @@
 #define PRINT_PRECISION "6"
 #define PRINT_DECIMAL_PRECISION "2"
 
+matrix scalar_mult(scalar k, matrix m)
+{
+  matrix r = matrix_create(m.n1, m.n2, 0);
+  for (int i = 0; i < m.n1; i++)
+  {
+    for (int j = 0; j < m.n2; j++)
+    {
+      scalar* ptr_m = matrix_get(m, i, j);
+      scalar* ptr_r = matrix_get(r, i, j);
+      *ptr_r = k * (*ptr_m);
+    }
+  }
+  return r;
+}
+
 matrix matrix_create(unsigned n1, unsigned n2, scalar v)
 {
   matrix m={n1,n2,true,NULL};
