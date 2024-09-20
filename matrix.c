@@ -82,3 +82,28 @@ void matrix_print(FILE *f, matrix m)
     }
   }
 }
+
+matrix matrix_mult(matrix a, matrix b)
+{
+  matrix res = {0, 0, false, NULL};
+
+  if (!a.ok || !b.ok || a.n2 != b.n1)
+    return res;
+  
+  res = matrix_create(a.n1, b.n2, 0);
+
+  for (unsigned i = 0; i < a.n1; i++)
+  {
+    for (unsigned j = 0; j < b.n2; j++)
+    {
+      scalar *cell = matrix_get(res, i, j);
+      
+      for (unsigned k = 0; k < a.n2; k++)
+      {
+        *cell += *matrix_get(a, i, k) * *matrix_get(b, k, j);
+      }
+    }
+  }
+
+  return res;
+}
