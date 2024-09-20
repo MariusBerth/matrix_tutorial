@@ -18,6 +18,8 @@ matrix matrix_identity(unsigned n);
 scalar *matrix_get(matrix m, unsigned i, unsigned j);
 matrix matrix_add(matrix m, matrix n);
 void matrix_print(FILE *f, matrix m);
+matrix matrix_scal_mult(scalar lambda, matrix m);
+matrix matrix_exp(matrix m, unsigned int n);
 
 matrix add_matrix(matrix m, matrix n);
 

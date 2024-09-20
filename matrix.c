@@ -82,3 +82,48 @@ void matrix_print(FILE *f, matrix m)
     }
   }
 }
+
+matrix matrix_scal_mult(scalar lambda, matrix m) {
+  matrix res = {0,0,false,NULL};
+  if (!m.ok){
+    return res;
+  }
+  else{
+    int i,j;
+    res = matrix_create(m.n1, m.n2, 0.);
+
+    for(i=0; i<m.n1; i++){
+      for(j=0; j<m.n2; j++){
+        *matrix_get(res, i, j) = lambda * (*matrix_get(m, i, j));
+      }
+    }
+    return res;
+  }
+}
+
+matrix matrix_exp (matrix m, unsigned int n){
+  matrix res ={0,0,false,NULL};
+  if (!m.ok || m.n1 != m.n2){
+    return res;
+  }
+  else{
+    int ex = n;
+    res = matrix_create(m.n1, m.n2, 0.);
+    matrix base = m;
+      
+    while (ex >0){
+      if ((ex % 2) == 1){
+        matrix resaux = matrix_add (res, base);
+        matrix_destroy(res);
+        res = resaux;
+        matrix_destroy(resaux);
+      }
+      matrix baseaux = matrix_mult(base,base);
+      matrix_destroy (base);
+      base = baseaux;
+      matrix_destroy(baseaux);
+      ex = ex/2;
+    }
+    return res;
+  }
+}
